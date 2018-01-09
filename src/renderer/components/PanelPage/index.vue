@@ -18,14 +18,13 @@
           color: item == activeKey ? 'red' : ''
         }"
         v-for="item in keys"
-        @click="activeKey = item"
+        @click="setActiveKey(item)"
       >
         {{item}}
       </div>
-      <div></div>
     </aside>
     <main>
-      <textarea class="textarea" ref="editor" contenteditable="true" v-model="content" @change="saveContent">
+      <textarea class="textarea" ref="editor" contenteditable="true" :value="activeValue" @change="saveContent">
 
       </textarea>
     </main>

@@ -1,9 +1,14 @@
 // Libs
-const Redis = require('ioredis')
+import * as Redis from 'ioredis'
+
+// Vuex
+import { types } from '@/store/types'
+import { mapState, mapMutations } from 'vuex'
 
 const address = localStorage.getItem('address')
 const redis = new Redis(address)
 
+// TODO: abstract
 // Create a readable stream (object mode)
 var stream = redis.scanStream()
 var keys = []
@@ -13,9 +18,6 @@ stream.on('data', function (resultKeys) {
     keys.push(resultKeys[i])
   }
 })
-stream.on('end', function () {
-  console.log('done with the keys: ', keys)
-})
 
 export default {
   name: 'panel-page',
@@ -23,21 +25,25 @@ export default {
   data () {
     return {
       keys: [],
-      content: '',
       newKey: '',
-      activeKey: '',
       inserting: false
     }
   },
 
+  computed: mapState(['activeKey', 'activeValue']),
+
   watch: {
     activeKey (newVal) {
-      console.log(newVal)
       this.loadValue()
     }
   },
 
   methods: {
+    ...mapMutations({
+      'setActiveKey': types.SET_ACTIVE_KEY,
+      'setActiveValue': types.SET_ACTIVE_VALUE
+    }),
+
     insertKey () {
       // redis
       redis.set(this.newKey, '')
@@ -49,11 +55,12 @@ export default {
 
     async loadValue () {
       const res = await redis.get(this.activeKey)
-      this.content = res
+      this.setActiveValue(res)
     },
 
-    saveContent () {
-      redis.set(this.activeKey, this.content)
+    saveContent (ev) {
+      this.setActiveValue(ev.target.value)
+      redis.set(this.activeKey, this.activeValue)
     }
   },
 
