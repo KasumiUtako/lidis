@@ -9,6 +9,7 @@ import store from './store'
 
 // Theme
 import 'bulma/css/bulma.css'
+import 'open-iconic/font/css/open-iconic.css'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios

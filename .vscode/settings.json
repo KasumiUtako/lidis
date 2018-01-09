@@ -1,0 +1,11 @@
+{
+    "eslint.enable": true,
+    "eslint.validate": [
+	    "javascript", "javascriptreact", "html", "vue"
+    ],
+    "emmet.syntaxProfiles": {
+        "vue-html": "html",
+        "vue": "html"
+    },
+    "prettier.eslintIntegration": true
+}

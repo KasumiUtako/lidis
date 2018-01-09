@@ -58,6 +58,9 @@
   "dependencies": {
     "axios": "^0.16.1",
     "bulma": "^0.6.1",
+    "hiredis": "^0.5.0",
+    "ioredis": "^3.2.2",
+    "open-iconic": "^1.1.1",
     "vue": "^2.3.3",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
