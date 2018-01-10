@@ -1,5 +1,9 @@
 // Libs
 import * as Redis from 'ioredis'
+import RedisGetter from '@/lib/redisGetter'
+
+// Components
+import Modal from '@/components/Modal/index.vue'
 
 // Vuex
 import { types } from '@/store/types'
@@ -7,20 +11,26 @@ import { mapState, mapMutations } from 'vuex'
 
 const address = localStorage.getItem('address')
 const redis = new Redis(address)
+const redisGetter = new RedisGetter(redis)
 
 // TODO: abstract
 // Create a readable stream (object mode)
-var stream = redis.scanStream()
-var keys = []
-stream.on('data', function (resultKeys) {
+const stream = redis.scanStream()
+const keys = []
+stream.on('data', async function (resultKeys) {
   // `resultKeys` is an array of strings representing key names
   for (var i = 0; i < resultKeys.length; i++) {
-    keys.push(resultKeys[i])
+    keys.push({
+      type: await redis.type(resultKeys[i]),
+      value: resultKeys[i]
+    })
   }
 })
 
 export default {
   name: 'panel-page',
+
+  components: { Modal },
 
   data () {
     return {
@@ -54,7 +64,8 @@ export default {
     },
 
     async loadValue () {
-      const res = await redis.get(this.activeKey)
+      const { type, value } = this.activeKey
+      const res = await redisGetter.getValue(type, value)
       this.setActiveValue(res)
     },
 

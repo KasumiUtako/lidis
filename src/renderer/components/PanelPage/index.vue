@@ -12,21 +12,33 @@
       <div v-if="inserting">
         <input class="input" v-model="newKey" @keydown.enter="insertKey" type="text" placeholder="Key Name" />
       </div>
-      <div
-        :key="item"
-        :style="{
-          color: item == activeKey ? 'red' : ''
-        }"
-        v-for="item in keys"
-        @click="setActiveKey(item)"
-      >
-        {{item}}
-      </div>
+      <table class="table list">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+              :key="item.value"
+              :style="{
+                color: item.value == activeKey ? 'red' : ''
+              }"
+              v-for="item in keys"
+              @click="setActiveKey(item)">
+            <td>{{ item.type }}</td>
+            <td>{{ item.value }}</td>
+          </tr>
+        </tbody>
+      </table>
     </aside>
     <main>
       <textarea class="textarea" ref="editor" contenteditable="true" :value="activeValue" @change="saveContent">
 
       </textarea>
+    <modal></modal>
+      
     </main>
   </div>
 </template>
@@ -54,6 +66,11 @@
       padding: $padding-default;
       color: #999;
       border-bottom: 1px solid #ccc;
+    }
+
+    .list {
+      width: 100%;
+      padding: $padding-default;
     }
   }
   main {

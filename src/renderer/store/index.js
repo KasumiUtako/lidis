@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import modules from './modules'
 import types from './types'
 
 const state = {
@@ -22,7 +21,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state,
-  modules,
   mutations,
   strict: process.env.NODE_ENV !== 'production'
 })
