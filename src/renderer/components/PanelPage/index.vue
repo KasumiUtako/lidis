@@ -1,44 +1,23 @@
 <template>
   <div class="panel">
     <aside>
-      <!-- search-bar -->
-      <!-- control-panel -->
       <header class="aside-head">
         <div>Keys</div>
-        <span @click="inserting = !inserting" class="icon">
+        <span class="icon">
           <span class="oi" data-glyph="plus"></span>
         </span>
       </header>
-      <div v-if="inserting">
-        <input class="input" v-model="newKey" @keydown.enter="insertKey" type="text" placeholder="Key Name" />
-      </div>
-      <table class="table list">
-        <thead>
-          <tr>
-            <th>Key</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-              :key="item.value"
-              :style="{
-                color: item.value == activeKey ? 'red' : ''
-              }"
-              v-for="item in keys"
-              @click="setActiveKey(item)">
-            <td>{{ item.type }}</td>
-            <td>{{ item.value }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- ListItem -->
+      <item-list></item-list>
     </aside>
     <main>
-      <textarea class="textarea" ref="editor" contenteditable="true" :value="activeValue" @change="saveContent">
-
-      </textarea>
-    <modal></modal>
-      
+      <!-- listItem -->
+      <item-list></item-list>
+      <section>
+        <textarea class="textarea" ref="editor" contenteditable="true" :value="activeValue">
+        </textarea>
+      </section>
+      <modal></modal>
     </main>
   </div>
 </template>
@@ -56,8 +35,8 @@
   $aside-width: 300px;
   $padding-default: 12px 10px;
   aside {
-    @include full($right: calc(100vw - #{$aside-width}));
-    background-color: #fff;
+    @include full($right: calc(100vw - #{$aside-width} - 17px));
+    background-color: #333333;
 
     header {
       display: flex;
@@ -73,6 +52,7 @@
       padding: $padding-default;
     }
   }
+
   main {
     @include full($left: $aside-width);
     background-color: pink;

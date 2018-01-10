@@ -1,3 +1,32 @@
+// Libs
+import RedisSock from '@/lib/redisSock'
+
+// Vuex
+// import { types } from '@/store/types'
+// import { mapState, mapMutations } from 'vuex'
+
+// Redis
+const address = localStorage.getItem('address')
+const redisSock = RedisSock(address)
+const redisSetter = redisSock.Setter
+
 export default {
-  name: 'modal'
+  name: 'modal',
+
+  data () {
+    return {
+      newKey: '',
+      selectType: 'string'
+    }
+  },
+
+  methods: {
+    cancel () {
+      // close modal
+    },
+    addKey () {
+      // emit list update
+      redisSetter.setValue(this.selectType, this.newKey)
+    }
+  }
 }

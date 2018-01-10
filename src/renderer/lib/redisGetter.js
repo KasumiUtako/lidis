@@ -3,8 +3,22 @@ export class redisGetter {
     this._ctx = ctx
   }
 
-  getV (type, key) {
-    this.getValue(type, key)
+  getAllItem (cb) {
+    // Create a readable stream (object mode)
+    return new Promise(resolve => {
+      const stream = this._ctx.scanStream()
+      let keys = []
+      stream.on('data', async resultKeys => {
+        // `resultKeys` is an array of strings representing key names
+        for (var i = 0; i < resultKeys.length; i++) {
+          keys.push({
+            type: await this._ctx.type(resultKeys[i]),
+            value: resultKeys[i]
+          })
+        }
+      })
+      stream.on('end', _ => resolve(keys))
+    })
   }
 
   getValue (type, key) {
