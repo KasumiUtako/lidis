@@ -8,11 +8,19 @@ export class redisGetter {
   }
 
   getValue (type, key) {
-    return this[`_get${this._capitalize(type)}Value`](key)
+    return this[this._getFnName(type)](key)
+  }
+
+  getLimit (type, key, star, end) {
+    return this[this._getFnName(type)](key, star, end)
   }
 
   _capitalize (str) {
     return str.charAt(0).toUpperCase() + str.slice(1)
+  }
+
+  _getFnName (type) {
+    return `_get${this._capitalize(type)}Value`
   }
 
   _getStringValue (key) {
@@ -27,12 +35,12 @@ export class redisGetter {
     return this._ctx.smembers(key)
   }
 
-  _getZsetValue (key) {
-    return this._ctx.zrange(key, 0, -1, 'WITHSCORES')
+  _getZsetValue (key, star = 0, end = -1) {
+    return this._ctx.zrange(key, star, end, 'WITHSCORES')
   }
 
-  _getListValue (key) {
-    return this._ctx.lrange(key, 0, -1)
+  _getListValue (key, star = 0, end = -1) {
+    return this._ctx.lrange(key, star, end)
   }
 }
 
