@@ -11,9 +11,6 @@ const state = {
 const mutations = {
   [types.SET_ACTIVE_KEY] (state, key) {
     state.activeKey = key
-  },
-  [types.SET_ACTIVE_VALUE] (state, value) {
-    state.activeValue = value
   }
 }
 

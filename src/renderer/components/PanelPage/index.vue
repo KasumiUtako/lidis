@@ -8,16 +8,25 @@
         </span>
       </header>
       <!-- ListItem -->
-      <item-list></item-list>
+      <item-list :keys="keys" :list="list">
+        <th slot="keys"
+            slot-scope="{ item }"
+            :key="item">
+            {{ item }}
+        </th>
+        <tr slot="list"
+            slot-scope="{ item }"
+            @click="setActiveKey(item)"
+            :style ="{ color: item.value === activeKey.value ? 'red' : '' }"
+            :key="item.value">
+          <td>{{ item.type }}</td>
+          <td>{{ item.value }}</td>
+        </tr>
+      </item-list>
     </aside>
     <main>
-      <!-- listItem -->
-      <item-list></item-list>
-      <section>
-        <textarea class="textarea" ref="editor" contenteditable="true" :value="activeValue">
-        </textarea>
-      </section>
-      <modal></modal>
+      <!-- <modal></modal> -->
+      <editor></editor>
     </main>
   </div>
 </template>

@@ -4,6 +4,7 @@ import RedisSock from '@/lib/redisSock'
 // Components
 import ItemList from '@/components/ItemList/index.vue'
 import Modal from '@/components/Modal/index.vue'
+import Editor from '@/components/Editor/index.vue'
 
 // Vuex
 import { types } from '@/store/types'
@@ -17,33 +18,27 @@ const redisGetter = redisSock.Getter
 export default {
   name: 'panel-page',
 
-  components: { ItemList, Modal },
+  components: { ItemList, Modal, Editor },
 
   data () {
     return {
-      keys: []
+      keys: [
+        'type',
+        'name'
+      ],
+      list: []
     }
   },
 
-  computed: mapState(['activeKey', 'activeValue']),
+  computed: mapState(['activeKey']),
 
-  watch: {
-    activeKey (newVal) {
-      this.loadValue()
-    }
+  async mounted () {
+    this.list = await redisGetter.getAllItem()
   },
 
   methods: {
     ...mapMutations({
-      'setActiveKey': types.SET_ACTIVE_KEY,
-      'setActiveValue': types.SET_ACTIVE_VALUE
-    }),
-
-    async loadValue () {
-      const { type, value } = this.activeKey
-      const res = await redisGetter.getValue(type, value)
-      this.setActiveValue(res)
-    }
-
+      'setActiveKey': types.SET_ACTIVE_KEY
+    })
   }
 }
