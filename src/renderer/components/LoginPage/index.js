@@ -18,6 +18,6 @@ export default {
   },
 
   created () {
-    if (localStorage.getItem('address') !== void 0) this.redirectToMain()
+    if (localStorage.getItem('address') !== null) this.redirectToMain()
   }
 }

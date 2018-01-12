@@ -4,6 +4,7 @@ import RedisGetter from '@/lib/redisGetter'
 import RedisSetter from '@/lib/redisSetter'
 
 let _instance = null
+
 class RedisSock {
   constructor (address) {
     const ctx = this._ctx = new Redis(address)
@@ -13,10 +14,10 @@ class RedisSock {
 
   static getInstance (address) {
     if (!_instance) {
-      _instance = new RedisSock()
+      _instance = new RedisSock(address)
     }
     return _instance
   }
 }
 
-export default RedisSock.getInstance
+export default RedisSock

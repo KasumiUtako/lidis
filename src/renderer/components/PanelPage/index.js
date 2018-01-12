@@ -12,7 +12,7 @@ import { mapState, mapMutations } from 'vuex'
 
 // Redis
 const address = localStorage.getItem('address')
-const redisSock = RedisSock(address)
+const redisSock = RedisSock.getInstance(address)
 const redisGetter = redisSock.Getter
 
 export default {

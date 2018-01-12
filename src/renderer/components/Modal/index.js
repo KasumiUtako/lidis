@@ -7,7 +7,7 @@ import RedisSock from '@/lib/redisSock'
 
 // Redis
 const address = localStorage.getItem('address')
-const redisSock = RedisSock(address)
+const redisSock = RedisSock.getInstance(address)
 const redisSetter = redisSock.Setter
 
 export default {
