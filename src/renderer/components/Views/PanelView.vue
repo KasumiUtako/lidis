@@ -30,6 +30,7 @@
     </main>
   </div>
 </template>
+
 <style lang="scss">
   @mixin full($top: 0, $bottom: 0, $left: 0, $right: 0) {
     position: absolute;
@@ -58,6 +59,7 @@
 
     .list {
       width: 100%;
+      color: #fff;
       padding: $padding-default;
     }
   }
@@ -67,5 +69,43 @@
     background-color: pink;
   }
 </style>
-<script src="./index.js">
+
+<script>
+// Libs
+import RedisSock from '@/lib/redisSock'
+
+// Vuex
+import { types } from '@/store/types'
+import { mapState, mapMutations } from 'vuex'
+
+// Redis
+const address = localStorage.getItem('address')
+const redisSock = RedisSock.getInstance(address)
+const redisGetter = redisSock.Getter
+
+export default {
+  name: 'panel-page',
+
+  data () {
+    return {
+      keys: [
+        'type',
+        'name'
+      ],
+      list: []
+    }
+  },
+
+  computed: mapState(['activeKey']),
+
+  async mounted () {
+    this.list = await redisGetter.getAllItem()
+  },
+
+  methods: {
+    ...mapMutations({
+      'setActiveKey': types.SET_ACTIVE_KEY
+    })
+  }
+}
 </script>

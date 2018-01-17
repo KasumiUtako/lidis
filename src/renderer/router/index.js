@@ -8,12 +8,12 @@ export default new Router({
     {
       path: '/panel',
       name: 'panel-page',
-      component: () => import('@/components/PanelPage/index.vue')
+      component: () => import('Views/PanelView')
     },
     {
       path: '/',
       name: 'login-page',
-      component: () => import('@/components/LoginPage/index.vue')
+      component: () => import('Views/LoginView')
     },
     {
       path: '*',

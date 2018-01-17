@@ -1,8 +1,37 @@
+<template>
+  <div style="display: flex">
+    <section>
+      <item-list v-if="type && type != 'string'" :keys="keys[type]" :list="activeValue">
+        <th slot="keys"
+            slot-scope="{ item }"
+            :key="item">
+          {{ item }}
+        </th>
+        <tr @click="activeValue2 = index"
+            slot="list"
+            slot-scope="{ index, item }"
+            :style ="{ color: index === activeValue2 ? 'red' : '' }"
+            :key="index">
+          <template v-if="type === 'list' || type === 'zset'">
+            <td>{{ index }}</td>
+            <td>{{ item }}</td>
+          </template>
+          <template v-if="type === 'hash'">
+            <td>{{ index }}</td>
+          </template>
+          <template v-if="type === 'set'">
+            <td>{{ item }}</td>
+          </template>
+        </tr>
+      </item-list>
+    </section>
+    <textarea class="textarea" ref="editor" contenteditable="true" :value="value"></textarea>
+  </div>
+</template>
+
+<script>
 // Libs
 import RedisSock from '@/lib/redisSock'
-
-// Components
-import ItemList from '@/components/ItemList/index.vue'
 
 // Vuex
 import { mapState } from 'vuex'
@@ -14,8 +43,6 @@ const redisGetter = redisSock.Getter
 
 export default {
   name: 'editor',
-
-  components: { ItemList },
 
   data () {
     return {
@@ -62,3 +89,4 @@ export default {
     }
   }
 }
+</script>
