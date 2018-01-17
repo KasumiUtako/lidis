@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
-    "bulma": "^0.6.1",
+    "bootstrap": "^3.3.7",
     "hiredis": "^0.5.0",
     "ioredis": "^3.2.2",
     "open-iconic": "^1.1.1",

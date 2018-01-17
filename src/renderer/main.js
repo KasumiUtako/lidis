@@ -8,7 +8,7 @@ import router from './router'
 import store from './store'
 
 // Theme
-import 'bulma/css/bulma.css'
+import 'bootstrap/dist/css/bootstrap.css'
 import 'open-iconic/font/css/open-iconic.css'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
