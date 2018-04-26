@@ -58,16 +58,13 @@
   max-width: calc(100vw - 125px);
 }
 </style>
-
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
-import { Getter } from 'vuex-class';
-
-@Component
-export default class App extends Vue {
-  menuVisible = false;
-
-  @Getter('databaseName') databaseName: string;
-}
+export default Vue.extend({
+  data() {
+    return {
+      menuVisible: false
+    };
+  }
+});
 </script>
