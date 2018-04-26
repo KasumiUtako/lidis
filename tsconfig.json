@@ -1,0 +1,11 @@
+{
+  "extends": "./node_modules/electron-webpack/tsconfig-base.json",
+
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "baseUrl": ".", // This must be specified if "paths" is.
+    "paths": {
+      "@/*": ["src/renderer/*", "src/main/*"] // This mapping is relative to "baseUrl"
+    }
+  }
+}
