@@ -1,8 +1,12 @@
 {
   "dependencies": {
+    "@types/ioredis": "^3.2.7",
+    "ioredis": "^3.2.2",
     "source-map-support": "^0.5.5",
-    "vue-material": "^1.0.0-beta-7",
+    "vee-validate": "^2.0.8",
     "vue": "^2.5.16",
+    "vue-material": "^1.0.0-beta-7",
+    "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

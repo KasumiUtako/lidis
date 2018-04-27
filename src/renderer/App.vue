@@ -2,45 +2,50 @@
   <div class="page-container">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
     <md-app md-waterfall md-mode="fixed-last">
-      <md-app-toolbar class="md-large md-dense md-primary">
+      <md-app-toolbar class="md-primary md-medium">
         <div class="md-toolbar-row">
           <div class="md-toolbar-section-start">
             <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
               <md-icon>menu</md-icon>
             </md-button>
 
-            <span class="md-title">∆ Liøis - {{databaseName}}</span>
+            <span class="md-title">{{title}}</span>
           </div>
+          
+            <!-- <md-autocomplete
+              v-if="isDatabaseView"
+              class="search"
+              v-model="selectedEmployee"
+              :md-options="[]"
+              md-layout="box">
+              <label>Search...</label>
+            </md-autocomplete> -->
 
-          <!-- 暂时不需要扩展 -->
-          <!-- <div class="md-toolbar-section-end">
+          <div class="md-toolbar-section-end">
             <md-button class="md-icon-button">
               <md-icon>more_vert</md-icon>
             </md-button>
-          </div> -->
-        </div>
-
-        <div class="md-toolbar-row">
-          <md-tabs class="md-primary">
-            <md-tab id="tab-database" md-label="数据库"></md-tab>
-            <md-tab id="tab-config" md-label="数据库设置"></md-tab>
-          </md-tabs>
+          </div>
         </div>
       </md-app-toolbar>
 
       <md-app-drawer :md-active.sync="menuVisible">
         <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
 
-        <md-list>
-          <md-list-item>
+        <md-list @click="menuVisible = false">
+          <md-list-item to="/db">
             <md-icon>storage</md-icon>
             <span class="md-list-item-text">我的数据库</span>
+          </md-list-item>
+          <md-list-item to="/config">
+            <md-icon>settings</md-icon>
+            <span class="md-list-item-text">数据库连接设置</span>
           </md-list-item>
         </md-list>
       </md-app-drawer>
 
       <md-app-content>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
+        <router-view></router-view>
       </md-app-content>
     </md-app>
   </div>
@@ -57,9 +62,14 @@
   width: 230px;
   max-width: calc(100vw - 125px);
 }
+
+.search {
+  max-width: 640px;
+}
 </style>
 <script lang="ts">
 import Vue from 'vue';
+
 import { Component } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 
@@ -67,6 +77,20 @@ import { Getter } from 'vuex-class';
 export default class App extends Vue {
   menuVisible: boolean = false;
 
+  // 数据库昵称
   @Getter('databaseName') databaseName: string;
+
+  // isDBRouter
+  get isDatabaseView() {
+    return this.$route.path === '/db';
+  }
+
+  get title() {
+    return `Liøis - "${this.databaseName}"`;
+  }
+
+  public created() {
+    this.$store.dispatch('redis/connectRedis');
+  }
 }
 </script>

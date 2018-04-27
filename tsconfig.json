@@ -5,7 +5,8 @@
     "experimentalDecorators": true,
     "baseUrl": ".", // This must be specified if "paths" is.
     "paths": {
-      "@/*": ["src/renderer/*", "src/main/*"] // This mapping is relative to "baseUrl"
+      "@/*": ["src/renderer/*", "src/main/*"], // This mapping is relative to "baseUrl"
+      "common/*": ["src/common/*"]
     }
   }
 }
