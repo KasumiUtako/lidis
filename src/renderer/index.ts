@@ -11,6 +11,5 @@ Vue.use(VueMaterial);
 new Vue({
   el: '#app',
   store,
-  components: { App },
-  template: '<App/>'
+  render: h => h(App)
 });

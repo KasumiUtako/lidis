@@ -60,11 +60,13 @@
 </style>
 <script lang="ts">
 import Vue from 'vue';
-export default Vue.extend({
-  data() {
-    return {
-      menuVisible: false
-    };
-  }
-});
+import { Component } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+
+@Component
+export default class App extends Vue {
+  menuVisible: boolean = false;
+
+  @Getter('databaseName') databaseName: string;
+}
 </script>
