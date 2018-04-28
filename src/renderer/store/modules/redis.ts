@@ -1,7 +1,12 @@
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { RootState } from '@/store/state';
 import { Redis, default as IORedis } from 'ioredis';
-import { RedisState, DBConnectionState } from '@/store/modules/redisState';
+import {
+  RedisState,
+  DBConnectionState,
+  ItemState
+} from '@/store/modules/redisState';
+import { map } from '@/lib/asyncro';
 
 const state: RedisState = {
   keys: [],
@@ -13,7 +18,11 @@ const actions: ActionTree<RedisState, RootState> = {
   getItemsByKey: async ({ state: { instance }, commit }, payload: string) => {
     if (instance) {
       const keys = await instance.keys(payload);
-      commit('setKeys', keys);
+      const data = await map(keys, async key => ({
+        key,
+        type: await instance.type(key)
+      }));
+      commit('setKeys', data);
     }
   },
 
@@ -30,7 +39,7 @@ const actions: ActionTree<RedisState, RootState> = {
 };
 
 const mutations: MutationTree<RedisState> = {
-  setKeys: (state, paylaod: Object[]) => (state.keys = paylaod),
+  setKeys: (state, paylaod: ItemState[]) => (state.keys = paylaod),
   updateStatu: (state, payload: DBConnectionState) => (state.state = payload),
   updateInstance: (state, payload: Redis) => (state.instance = payload)
 };

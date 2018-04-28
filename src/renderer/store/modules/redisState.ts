@@ -5,8 +5,13 @@ export enum DBConnectionState {
   WAIT
 }
 
+export type ItemState = {
+  key: string;
+  type: string;
+};
+
 export type RedisState = {
-  keys: Object[];
+  keys: ItemState[];
   state: DBConnectionState;
   instance: Redis | null;
 };

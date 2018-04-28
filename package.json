@@ -1,4 +1,6 @@
 {
+  "name": "lidis",
+  "version": "0.0.0",
   "dependencies": {
     "@types/ioredis": "^3.2.7",
     "ioredis": "^3.2.2",

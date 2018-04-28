@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <md-table v-model="fakeList" md-sort="key" md-sort-order="asc" md-card md-fixed-header>
+  <div class="md-layout">
+    <md-table class="md-layout-item md-size-40" v-model="fakeList" md-card md-fixed-header>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title">数据库</h1>
@@ -18,7 +18,8 @@
       </md-table-empty-state>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="键(Key)" md-sort-by="key">{{ item.key }}</md-table-cell>
+        <md-table-cell md-label="键(Key)">{{ item.key }}</md-table-cell>
+        <md-table-cell md-label="类型">{{ item.type }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -37,7 +38,7 @@ export default class Database extends Vue {
   searched = [];
 
   get fakeList() {
-    return this.keys.map(key => ({ key }));
+    return this.keys.map(({ key, type }) => ({ key, type }));
   }
 
   @Getter('keys', { namespace })
