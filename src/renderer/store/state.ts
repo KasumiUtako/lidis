@@ -1,5 +1,3 @@
-import { Redis } from 'ioredis';
-
 export interface ConnectionConfig {
   name: string;
   host: string;

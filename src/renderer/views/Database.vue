@@ -17,11 +17,12 @@
         <md-button class="md-primary md-raised" @click="newKey">创建新Key</md-button>
       </md-table-empty-state>
 
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
+      <md-table-row slot="md-table-row" slot-scope="{ item }" @click="setCurrentKey(item)">
         <md-table-cell md-label="键(Key)">{{ item.key }}</md-table-cell>
         <md-table-cell md-label="类型">{{ item.type }}</md-table-cell>
       </md-table-row>
     </md-table>
+    <div>{{JSON.stringify(current)}}</div>
   </div>
 </template>
 
@@ -44,8 +45,14 @@ export default class Database extends Vue {
   @Getter('keys', { namespace })
   keys: Object[];
 
+  @Getter('current', { namespace })
+  current: {};
+
   @Action('getItemsByKey', { namespace })
   getItemsByKey: any;
+
+  @Action('setCurrentKey', { namespace })
+  setCurrentKey: any;
 
   public searchOnTable() {
     this.getItemsByKey(this.search || '*');

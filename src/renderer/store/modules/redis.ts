@@ -4,17 +4,44 @@ import { Redis, default as IORedis } from 'ioredis';
 import {
   RedisState,
   DBConnectionState,
-  ItemState
+  ItemState,
+  CurrentState
 } from '@/store/modules/redisState';
 import { map } from '@/lib/asyncro';
 
 const state: RedisState = {
   keys: [],
   state: DBConnectionState.WAIT,
-  instance: null
+  instance: null,
+
+  current: {
+    key: '',
+    type: '',
+    data: ''
+  }
 };
 
 const actions: ActionTree<RedisState, RootState> = {
+  setCurrentKey: async (
+    { state: { instance }, commit },
+    { type, key }: ItemState
+  ) => {
+    if (instance) {
+      let data;
+      switch (type) {
+        case 'string':
+          data = await instance.get(key);
+          break;
+        case 'list':
+          data = await instance.lrange(key, 0, -1);
+          break;
+        default:
+          data = '';
+      }
+      commit('setCurrentKey', { data, type, key });
+    }
+  },
+
   getItemsByKey: async ({ state: { instance }, commit }, payload: string) => {
     if (instance) {
       const keys = await instance.keys(payload);
@@ -39,13 +66,15 @@ const actions: ActionTree<RedisState, RootState> = {
 };
 
 const mutations: MutationTree<RedisState> = {
+  setCurrentKey: (state, payload: CurrentState) => (state.current = payload),
   setKeys: (state, paylaod: ItemState[]) => (state.keys = paylaod),
   updateStatu: (state, payload: DBConnectionState) => (state.state = payload),
   updateInstance: (state, payload: Redis) => (state.instance = payload)
 };
 
 const getters: GetterTree<RedisState, RootState> = {
-  keys: state => state.keys
+  keys: state => state.keys,
+  current: state => state.current
 };
 
 export const redis: Module<RedisState, RootState> = {

@@ -2,7 +2,7 @@
   <div class="page-container">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
     <md-app md-waterfall md-mode="fixed-last">
-      <md-app-toolbar class="md-primary md-medium">
+      <md-app-toolbar class="md-primary">
         <div class="md-toolbar-row">
           <div class="md-toolbar-section-start">
             <md-button class="md-icon-button" @click="menuVisible = !menuVisible">

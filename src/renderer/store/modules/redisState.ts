@@ -10,8 +10,13 @@ export type ItemState = {
   type: string;
 };
 
+export interface CurrentState extends ItemState {
+  data: string | string[] | {};
+}
+
 export type RedisState = {
   keys: ItemState[];
   state: DBConnectionState;
   instance: Redis | null;
+  current: CurrentState;
 };
