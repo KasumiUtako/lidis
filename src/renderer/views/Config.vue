@@ -59,8 +59,6 @@ import { Component } from 'vue-property-decorator';
 import { Getter, Mutation } from 'vuex-class';
 import { ConnectionConfig } from '@/store/state';
 
-const namespace = 'redis';
-
 type ValidateClass = {
   'md-invalid': boolean;
 };

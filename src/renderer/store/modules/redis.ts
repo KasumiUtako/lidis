@@ -9,6 +9,10 @@ import {
 } from '@/store/modules/redisState';
 import { map } from '@/lib/asyncro';
 
+const RedisErrors = {
+  unknowTypeError: () => new Error('UNKNOW TYPE ERROR')
+};
+
 const state: RedisState = {
   keys: [],
   state: DBConnectionState.WAIT,
@@ -22,6 +26,29 @@ const state: RedisState = {
 };
 
 const actions: ActionTree<RedisState, RootState> = {
+  newKey: async (
+    { state: { instance, keys }, commit },
+    { type, key }: ItemState
+  ) => {
+    if (instance) {
+      let res;
+      switch (type) {
+        case 'string':
+          res = await instance.setnx(key, '');
+          break;
+        case 'list':
+          res = await instance.rpush(key, '');
+          break;
+        default:
+          res = RedisErrors.unknowTypeError();
+      }
+      console.log(res);
+      if (res) {
+        const newKeys = [{ type, key }].concat(keys);
+        commit('setKeys', newKeys);
+      }
+    }
+  },
   setCurrentKey: async (
     { state: { instance }, commit },
     { type, key }: ItemState
@@ -74,7 +101,8 @@ const mutations: MutationTree<RedisState> = {
 
 const getters: GetterTree<RedisState, RootState> = {
   keys: state => state.keys,
-  current: state => state.current
+  current: state => state.current,
+  supportTypes: () => ['string', 'list']
 };
 
 export const redis: Module<RedisState, RootState> = {

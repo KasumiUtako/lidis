@@ -1,5 +1,6 @@
 <template>
   <div class="md-layout">
+
     <md-table class="md-layout-item md-size-40" v-model="fakeList" md-card md-fixed-header>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
@@ -22,14 +23,55 @@
         <md-table-cell md-label="类型">{{ item.type }}</md-table-cell>
       </md-table-row>
     </md-table>
+
+    <form novalidate class="md-layout-item md-size-40 md-small-size-100" @submit.prevent="newKeyFormSubmit">
+      <md-card>
+
+        <md-card-header>
+          <div class="md-title">新建键值对</div>
+        </md-card-header>
+
+        <md-card-content>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-size-100">
+              <md-field>
+                <label for="key">新键名</label>
+                <md-input name="key" id="key" v-model="form.key" />
+              </md-field>
+            </div>
+            <div class="md-layout-item md-size-100">
+              <md-radio
+                v-for="(type, idx) in supportTypes"
+                v-model="form.type"
+                :value="type"
+                :key="idx"
+              >
+                {{type}}
+              </md-radio>
+            </div>
+          </div>
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button type="submit" class="md-primary">提交</md-button>
+        </md-card-actions>
+
+      </md-card>
+    </form>
+
     <div>{{JSON.stringify(current)}}</div>
+
+    <md-button class="md-icon-button md-raised button-theme">
+      <md-icon>add</md-icon>
+    </md-button>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
+import { Component } from 'vue-property-decorator';
+import { ItemState } from '@/store/modules/redisState';
 
 const namespace = 'redis';
 
@@ -37,13 +79,20 @@ const namespace = 'redis';
 export default class Database extends Vue {
   search: string = '';
   searched = [];
+  form = {
+    key: '',
+    type: ''
+  };
 
   get fakeList() {
     return this.keys.map(({ key, type }) => ({ key, type }));
   }
 
+  @Getter('supportTypes', { namespace })
+  supportTypes: string[];
+
   @Getter('keys', { namespace })
-  keys: Object[];
+  keys: ItemState[];
 
   @Getter('current', { namespace })
   current: {};
@@ -54,10 +103,15 @@ export default class Database extends Vue {
   @Action('setCurrentKey', { namespace })
   setCurrentKey: any;
 
+  @Action('newKey', { namespace })
+  newKey: any;
+
   public searchOnTable() {
     this.getItemsByKey(this.search || '*');
   }
-  public newKey() {}
+  public newKeyFormSubmit() {
+    this.newKey(this.form);
+  }
 
   public created() {
     this.getItemsByKey(this.search || '*');
@@ -68,5 +122,10 @@ export default class Database extends Vue {
 <style lang="scss" scoped>
 .md-field {
   max-width: 300px;
+}
+.button-theme {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
 }
 </style>

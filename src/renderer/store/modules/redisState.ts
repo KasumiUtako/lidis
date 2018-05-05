@@ -5,10 +5,10 @@ export enum DBConnectionState {
   WAIT
 }
 
-export type ItemState = {
+export interface ItemState {
   key: string;
   type: string;
-};
+}
 
 export interface CurrentState extends ItemState {
   data: string | string[] | {};
